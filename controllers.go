@@ -1,10 +1,17 @@
 package main
 
-import "fmt"
+func HelloController(req HelloMsg) (error, map[string]interface{}) {
+	if req.Version == "" || len(req.Version) < 3 {
+		return InvalidInputError, nil
+	}
+	if req.Version[0:3] != "0.1" {
+		return IncopatibleVersions, nil
+	}
 
-func HelloController(hello HelloMsg) (error, map[string]interface{}) {
-	fmt.Println("Inside controller", hello)
-	test := map[string]interface{}{"type": "hello", "version": "0.1.2", "agent": "Marabu-Core Client 0.7"}
+	res := map[string]interface{}{
+		"version": "0.1.2",
+		"agent":   "Mitsos-Core Client 0.7",
+	}
 
-	return nil, test
+	return nil, res
 }

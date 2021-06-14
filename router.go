@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/mitchellh/mapstructure"
 )
 
+type Result = map[string]interface{}
 type HelloMsg struct {
 	Type    string `json:"type"`
 	Version string `json:"version"`
@@ -13,10 +12,10 @@ type HelloMsg struct {
 }
 
 // Casts request data to the appropriate type and routes the requst
-func Route(req map[string]interface{}) (error, map[string]interface{}) {
+func Route(req map[string]interface{}) (error, Result) {
 	reqType, ok := req["type"]
 	if !ok {
-		fmt.Println("Type key does not exist in map")
+		return InvalidMessage, nil
 	}
 
 	switch reqType {
@@ -26,5 +25,5 @@ func Route(req map[string]interface{}) (error, map[string]interface{}) {
 		return HelloController(hello)
 	}
 
-	return nil, nil
+	return InvalidMessage, nil
 }
